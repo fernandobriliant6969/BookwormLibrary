@@ -11,7 +11,7 @@
 ## Fitur Aplikasi
 
 - Login & Register
-- Role Superadmin, Admin, Member & Guest
+- Role Superadmin, Admin & Member
 - Manajemen Buku dengan Fitur Search & Filter serta Upload Cover Buku menggunakan Sistem Cloudinary Image Cloud
 - Manajemen Peminjaman dengan Fitur Search & Filter
 - Manajemen Genre
