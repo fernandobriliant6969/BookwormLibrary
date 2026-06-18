@@ -1,0 +1,80 @@
+.choices__inner {
+    min-height: 43px !important;
+    background-color: #1e1e2d !important;
+    border: 1px solid #4f5d73 !important;
+    padding: 4px 10px !important;
+    border-radius: 0.5rem !important;
+}
+
+.choices__input::placeholder, .choices__placeholder {
+    color: #b0b0bf !important;
+    opacity: 1 !important;
+    font-size: 0.9rem !important;
+}
+
+.choices__list--multiple .choices__item {
+    background-color: #435ebe !important;
+    border: 1px solid #435ebe !important;
+    color: #ffffff !important;
+    border-radius: 4px !important;
+    padding: 2px 8px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+}
+
+.choices__list--dropdown {
+    background-color: #1e1e2d !important;
+    border: 1px solid #4f5d73 !important;
+    z-index: 999 !important;
+}
+
+.choices__list--dropdown .choices__item {
+    color: #ffffff !important;
+    padding: 8px 12px !important;
+    font-size: 0.9rem !important;
+}
+
+.choices__list--dropdown .choices__item--focusable.is-highlighted {
+    background-color: #435ebe !important;
+    color: #ffffff !important;
+}
+
+.choices__list--dropdown .choices__input {
+    background-color: #151521 !important;
+    border: 1px solid #4f5d73 !important;
+    color: #ffffff !important;
+}
+
+.custom-search-input, .search-addon {
+    background-color: #1e1e2d !important;
+    color: #ffffff !important;
+    height: 43px !important;
+}
+
+.custom-search-input:focus {
+    background-color: #1e1e2d !important;
+    border-color: #435ebe !important;
+    box-shadow: 0 0 0 0.25rem rgba(67, 94, 190, 0.25) !important;
+    color: #ffffff !important;
+}
+
+.custom-search-input::placeholder {
+    color: #b0b0bf !important;
+    opacity: 1 !important;
+}
+
+.search-addon {
+    padding: 0 15px !important;
+    border-right: none !important;
+}
+        
+.search-addon i {
+    font-size: 0.95rem !important;
+    line-height: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+}
+        
+.custom-search-input {
+    border-left: none !important;
+}

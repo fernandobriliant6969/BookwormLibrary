@@ -1,0 +1,12 @@
+@media (max-width: 1199.98px) {
+    .sidebar-wrapper {
+        height: 100dvh !important;
+        max-height: 100dvh !important;
+    }
+
+    .sidebar-menu {
+        overflow-y: auto !important;
+        max-height: calc(100dvh - 180px) !important;
+        scrollbar-width: thin;
+    }
+}
