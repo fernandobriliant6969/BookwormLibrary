@@ -54,15 +54,30 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi Input
         $request->validate([
             "nama" => "required",
-            "password" => ["required", Rules\Password::defaults()]
+            "username" => "required|unique:users",
+            "email" => "required|email|unique:users",
+            "nomorTelp" => "required",
+            "jenisKelamin" => "required",
+            "alamat" => "required",
+            "password" => ["required", Rules\Password::defaults()],
         ],[
             "nama.required" => "Nama harus di isi",
+            "username.required" => "Username harus di isi",
+            "username.unique" => "Username ini sudah digunakan, Gunakan username lain",
+            "email.email" => "Email tidak valid, Contoh: email@example.com",
+            "email.required" => "Email harus di isi",
+            "email.unique" => "Email ini sudah digunakan, Gunakan email lain",
+            "nomorTelp.required" => "Nomor telepon harus di isi",
+            "jenisKelamin.required" => "Jenis kelamin harus di isi",
+            "alamat.required" => "Alamat harus di isi",
             "password.required" => "Password harus di isi",
             "password.min" => "Minimal panjang password 8 karakter"
         ]);
 
+        // Membuat user dengan hasil input
         $user = User::create([
             'nama' => $request->nama,
             'username' => $request->username,
@@ -101,8 +116,10 @@ class UserController extends Controller
      */
     public function update(Request $request, $idUser)
     {
+        // Mencari anggota dengan id user yang ingin diupdate
         $user = User::findOrFail($idUser);
 
+        // Validasi Input
         $input = $request->validate([
             "nama" => "required",
             "username" => "required|unique:users,username," . $user->idUser . ",idUser",
@@ -124,28 +141,36 @@ class UserController extends Controller
 
         $input['photoUrl'] = $user->photoUrl;
 
+        // Jika button Hapus avatar diklik
         if ($request->is_avatar_deleted == '1') {
+            // Jika anggota mempunyai avatar
             if ($user->photoUrl) {
                 $publicId = pathinfo($user->photoUrl, PATHINFO_FILENAME);
+
+                // Menghapus avatar di cloudinary
                 $uploadApi->destroy($publicId);
                 $input['photoUrl'] = null;
             }
-        } elseif ($request->hasFile('avatar')) {
             
+            // Jika input terdapat avatar baru
+        } elseif ($request->hasFile('avatar')) {
+            // Jika anggota mempunyai avatar, Hapus avatar lama di Cloudinary
             if ($user->photoUrl) {
                 $oldPublicId = pathinfo($user->photoUrl, PATHINFO_FILENAME);
                 $uploadApi->destroy($oldPublicId);
             }
             
-            $uploadResponse = $uploadApi->upload($request->file('avatar')->getRealPath(), [
+            // Upload avatar baru ke folder user di cloudinary
+            $upload = $uploadApi->upload($request->file('avatar')->getRealPath(), [
                 'folder' => 'user'
             ]);
             
-            $newPhotoUrl = $uploadResponse['secure_url'];
+            // Menyimpan link avatar di input
+            $input['photoUrl'] = $upload['secure_url'];
             
-            $input['photoUrl'] = $newPhotoUrl;
         }
 
+        // Mengupdate data anggota berdasarkan hasil input
         $user->update([
             "nama" => $input['nama'],
             "username" => $input['username'],
@@ -195,8 +220,14 @@ class UserController extends Controller
     {
         $user = User::findOrFail($idUser);
 
-        if(Auth::id() == $idUser || $user->role == 'admin' || $user->role == 'superadmin'){
+        // Jika anggota yang ingin di update adalah anggota yang sedang login
+        if(Auth::id() == $idUser){
             return redirect()->route('admin.user.index')->with('failed','Gagal mengupdate user menjadi admin');
+        }
+
+        // Jika anggota yang ingin di update role nya adalah admin / superadmin
+        if($user->role == 'admin' || $user->role == 'superadmin'){
+            return redirect()->route('admin.user.index')->with('failed','User sudah menjadi admin');
         }
 
         $user->update(['role' => 'admin']);
@@ -211,10 +242,12 @@ class UserController extends Controller
     {
         $user = User::findOrFail($idUser);
 
+        // Jika anggota yang ingin di update adalah anggota yang sedang login
         if(Auth::id() == $idUser){
             return redirect()->route('admin.user.index')->with('failed','Gagal mengupdate user menjadi admin');
         }
 
+        // Jika anggota yang ingin di update role nya adalah member
         if($user->role == 'member'){
             return redirect()->route('admin.user.index')->with('failed','User sudah menjadi member');
         }

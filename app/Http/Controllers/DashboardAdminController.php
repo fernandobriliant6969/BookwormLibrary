@@ -13,6 +13,7 @@ class DashboardAdminController extends Controller
 {
     public function index()
     {
+        // Menghitung data statistik
         $jumlahBuku = Buku::count();
         $jumlahAnggota = User::count();
         $jumlahPeminjaman = Peminjaman::count();
@@ -24,6 +25,7 @@ class DashboardAdminController extends Controller
 
         $peminjamanHarian = collect();
     
+        // For Looping untuk menyimpan data aktivitas peminjaman ke dalam bentuk array 
         for($i = 29; $i >= 0; $i--) {
             $date = now()->subDays($i)->format('Y-m-d');
             $labelDate = now()->subDays($i)->format('d M');
@@ -36,15 +38,24 @@ class DashboardAdminController extends Controller
             ]);
         }
 
+        // Mengambil bagian array "tanggal" dari peminjaman dan menyimpan menjadi array tersendiri
         $chartLabelTotalPeminjaman = $peminjamanHarian->pluck('tanggal')->toArray();
+
+        // Mengambil bagian array "total" dari peminjaman dan menyimpan menjadi array tersendiri
         $chartDataTotalPeminjaman = $peminjamanHarian->pluck('total')->toArray();
 
+        // Memanggil Carbon untuk menformat tanggal menggunakan format ('Y-m-d')
         $hariIni = Carbon::now()->format('Y-m-d');
+
+        // Menghitung total buku yang status peminjaman nya Aktif atau Dikembalikan Sebagian dan Sudah Melewati Tanggal Kembali
         $bukuOverdue = Peminjaman::where('status', 'Terlambat')->orWhere(function($query) use ($hariIni) {
                             $query->whereIn('status', ['Aktif', 'Dikembalikan Sebagian'])->whereDate('tanggalKembali', '<', $hariIni);
                         })->withCount('details')->get()->sum('details_count');
 
+        // Menghitungt total buku yang status peminjaman nya Aktif atau Dikembalikan Sebagian dan Belum Melewati Tanggal Kembali
         $bukuDipinjamAman = Peminjaman::whereIn('status', ['Aktif', 'Dikembalikan Sebagian'])->whereDate('tanggalKembali', '>=', $hariIni)->withCount('details')->get()->sum('details_count');
+        
+        // Menghitung stok buku 
         $bukuDiRak = $jumlahBuku - ($bukuOverdue + $bukuDipinjamAman);
     
         if($bukuDiRak < 0) { 

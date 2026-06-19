@@ -29,6 +29,7 @@ class GenreController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi input
         $input = $request->validate([
             'nama' => 'required|unique:genres',
             'deskripsi' => 'required'
@@ -38,8 +39,10 @@ class GenreController extends Controller
             'nama.unique' => 'Nama genre ini sudah ada, gunakan nama lain'
         ]);
 
+        // Membuat genre
         $genre = Genre::create($input);
 
+        // Mengembalikan pengguna ke list genre
         return redirect()->route('admin.genre.index')->with('success', 'Berhasil menambahkan genre dengan nama ' . $genre->nama . '');
     }
 
@@ -64,6 +67,7 @@ class GenreController extends Controller
      */
     public function update(Request $request, $idGenre)
     {
+        // Validasi Input
         $input = $request->validate([
             'nama' => 'required|unique:genres,nama,' . $idGenre . ',idGenre',
             'deskripsi' => 'required',
@@ -73,19 +77,22 @@ class GenreController extends Controller
             'deskripsi.required' => 'Deskripsi genre harus di isi!',
         ]);
 
-        $genre = Genre::find($idGenre);
+        // Mencari genre berdasarkan id genre yang ingin di update
+        $genre = Genre::findOrFail($idGenre);
 
+        // Mengupdate genre dengan data input baru
         $genre->update($input);
 
+        // Mengembalikan pengguna ke list genre
         return redirect()->route('admin.genre.index')->with('success', 'Berhasil update genre dengan nama ' . $genre->nama . '');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Genre $genre)
+    public function destroy($idGenre)
     {
-        $genres = Genre::find($genre);
+        $genre = Genre::findOrFail($idGenre);
         if($genre){
             $genre->delete();
             return redirect()->route('admin.genre.index')->with('success', 'Berhasil menghapus genre!');

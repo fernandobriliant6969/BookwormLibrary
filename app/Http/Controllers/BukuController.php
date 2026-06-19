@@ -113,6 +113,7 @@ class BukuController extends Controller
         $judul = $input['judul'];
         $pengarang = $input['pengarang']; 
 
+        // Generate ringkasan menggunakan AI Groq
         $prompt = <<<EOT
         Berikan ringkasan atau sinopsis singkat dalam Bahasa Indonesia untuk buku berjudul "$judul" karya "$pengarang". 
 
@@ -176,6 +177,7 @@ class BukuController extends Controller
             ]);
         }
         
+        // Menyimpan hasil ringkasan ke buku yang telah ditambahkan
         if($hasilSummary){
             $buku->update([
                 'ringkasan' => $hasilSummary
@@ -244,6 +246,7 @@ class BukuController extends Controller
             $judul = $input['judul'];
             $pengarang = $input['pengarang']; 
 
+            // Generate ringkasan menggunakan AI Groq
             $prompt = <<<EOT
             Berikan ringkasan atau sinopsis singkat dalam Bahasa Indonesia untuk buku berjudul "$judul" karya "$pengarang". 
 
