@@ -3,17 +3,20 @@
         <div class="sidebar-header position-relative px-2 pt-4 pb-0">
             <div class="d-flex align-items-center justify-content-center w-100 position-relative">
                 <div class="d-flex align-items-center gap-3">
+                    <!-- Menampilkan Logo Aplikasi -->
                     <div class="logo">
                         <a href="{{ route('admin.dashboard') }}">
                             <img src="{{ asset('assets/compiled/png/logo.png') }}" alt="Logo" style="width: 45px; height: 45px;">
                         </a>
                     </div>
 
+                    <!-- Menampilkan Nama Aplikasi -->
                     <div class="apptitle">
                         <p class="text-dark-theme-white fs-5 mb-0 fw-bold text-nowrap">Bookworm Library</p>
                     </div>
                 </div>
 
+                <!-- Button X untuk tutup sidebar -->
                 <div class="sidebar-toggler x position-absolute" style="right: 10px;">
                     <a href="#" class="sidebar-hide d-xl-none d-block">
                         <i class="bi bi-x bi-middle"></i>
@@ -26,6 +29,7 @@
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
 
+                <!-- Menu Dashboard -->
                 <li class="sidebar-item {{ Route::is('admin.dashboard') ? 'active' : '' }}">
                     <a href="{{ route('admin.dashboard') }}" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
@@ -33,6 +37,7 @@
                     </a>
                 </li>
 
+                <!-- Menu List Buku -->
                 <li class="sidebar-item {{ Route::is('admin.buku.listbuku') ? 'active' : '' }}">
                     <a href="{{ route('admin.buku.listbuku') }}" class='sidebar-link'>
                         <i class="bi bi-journal-text"></i>
@@ -40,6 +45,7 @@
                     </a>
                 </li>
 
+                <!-- Menu Buku: Create & Manage -->
                 <li class="sidebar-item has-sub {{ Route::is('admin.buku.*') && !Route::is('admin.buku.listbuku') ? 'active' : '' }}">
                     <a class='sidebar-link'>
                         <i class="bi bi-journal-bookmark"></i>
@@ -57,6 +63,7 @@
                     </ul>
                 </li>
 
+                <!-- Menu Genre: Create & Manage -->
                 <li class="sidebar-item has-sub {{ Route::is('admin.genre.*') ? 'active' : '' }}">
                     <a class='sidebar-link'>
                         <i class="bi bi-box-seam"></i>
@@ -74,6 +81,7 @@
                     </ul>
                 </li>
 
+                <!-- Menu Peminjaman: Create & Manage -->
                 <li class="sidebar-item has-sub {{ Route::is('admin.peminjaman.*') ? 'active' : '' }}">
                     <a class='sidebar-link'>
                         <i class="bi bi-bag"></i>
@@ -90,6 +98,7 @@
                     </ul>
                 </li>
 
+                <!-- Menu User: Create & Manage -->
                 <li class="sidebar-item has-sub {{ Route::is('admin.user.*') ? 'active' : '' }}">
                     <a class='sidebar-link'>
                         <i class="bi bi-people-fill"></i>
@@ -110,9 +119,11 @@
         </div>
 
         <div class="sidebar-footer p-4 border-top mt-auto w-100">
+            <!-- Menu User Paling Bawah di Sidebar -->
             <div class="d-flex justify-content-between align-items-center w-100">
                 <div class="dropdown">
-                    <a href="#" id="topbarUserDropdown" class="user-dropdown d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+                    <!-- Menampilkan Avatar, Nama & Role Anggota yang sedang login -->
+                    <a id="topbarUserDropdown" class="user-dropdown d-flex align-items-center text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="avatar avatar-md2 me-2">
                             <img src="{{ Auth::user()->photoUrl ?? asset('assets/compiled/jpg/1.jpg') }}" alt="Avatar" class="rounded-circle">
                         </div>
@@ -128,19 +139,23 @@
                         </div>
                     </a>
 
+                    <!-- Menu Dropdown ketika diklik Nama/Avatar -->
                     <ul class="dropdown-menu dropdown-menu-start shadow-lg" aria-labelledby="topbarUserDropdown">
+                        <!-- Menu untuk Edit Profile -->
                         <li>
                             <a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('profile.edit') }}">
                                 <i class="bi bi-person d-inline-flex align-items-center" ></i>
                                 <span>Profile</span>
                             </a>
                         </li>
+                        <!-- Menu untuk Settings (Edit Password, Email & Hapus Akun) -->
                         <li>
                             <a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('profile.security') }}">
                                 <i class="bi bi-gear d-inline-flex align-items-center"></i>
                                 <span>Settings</span>
                             </a>
                         </li>
+                        <!-- Menu untuk Logout -->
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <a class="dropdown-item text-danger d-flex align-items-center gap-2" href="{{ route('logout') }}"
@@ -155,6 +170,7 @@
                     </ul>
                 </div>
 
+                <!-- Menu untuk Toggle / Ganti Menu (Light / Dark) -->
                 <div class="theme-toggle d-flex gap-1 align-items-center ms-2">
                     <i class="bi bi-sun-fill text-warning position-relative" style="font-size: 13px; top: -1px;"></i>
 

@@ -21,6 +21,7 @@
                 height: 300px;
             }
         }
+
         @media (min-width: 992px) {
             .card-img-responsive {
                 height: 400px;
@@ -309,7 +310,6 @@
                                                                     <div class="text-warning-custom style-bintang-kecil text-nowrap" style="font-size: 0.8rem; padding-top: 2px;">
                                                                         ⭐<span class="text-white fw-bold">{{ $review->pivot->rating }}</span>
                                                                     </div>
-
                                                                 </div>
 
                                                                 <!-- Menampilkan pesan review -->

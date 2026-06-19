@@ -1,9 +1,13 @@
 @extends('admin.layouts.main')
 
+<!-- Memberikan keterangan "Dashboard Admin" pada Judul Halaman -->
 @section('current-page','Dashboard Perpustakaan')
 
 @section('content')
     <div class="row g-2">
+        <!-- Menampilkan Data Berbentuk Card. di Laptop 1 baris 3 Card, di Tablet 1 baris 2 Card, di hp 1 baris 1 card -->
+
+        <!-- Card: Menampilkan Jumlah Review -->
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card">
                 <div class="card-body">
@@ -21,6 +25,7 @@
             </div>
         </div>
 
+        <<!-- Card: Menampilkan Jumlah Peminjaman -->
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card">
                 <div class="card-body">
@@ -38,6 +43,7 @@
             </div>
         </div>
 
+        <!-- Card: Menampilkan Jumlah Peminjaman yang telah dikembalikan / Status: "Telah Dikembalikan" -->
         <div class="col-12 col-md-6 col-lg-4">
             <div class="card">
                 <div class="card-body">
@@ -56,12 +62,15 @@
         </div>
     </div>
 
+    <!-- Menampilkan Statistik Berbasis Chart -->
     <div class="row g-3">
+        <!-- Chart: Menampilkan Statistik Perpustakaan (Jumlah Anggota, Buku, Genre &  Peminjaman) dengan Tipe Chart: Bar -->
         <div class="col-12 col-lg-6">
             <div class="card h-100">
                 <div class="card-header text-center">
                     <h4>Statistik Perpustakaan</h4>
                 </div>
+                <!-- Menyiapkan tempat menggunakan Chart.JS -->
                 <div class="card-body d-flex align-items-center justify-content-center">
                     <div style="position: relative; height: 400px; width: 100%;">
                         <canvas id="mainDashboardChart"></canvas>
@@ -70,11 +79,13 @@
             </div>
         </div>
 
+        <!-- Chart: Menampilkan Aktifivitas Jumlah Peminjaman per hari selama 30 hari terakhir dengan Tipe Chart: Line -->
         <div class="col-12 col-lg-6">
             <div class="card h-100">
                 <div class="card-header text-center">
                     <h4>Aktivitas Peminjaman - 30 Hari Terakhir</h4>
                 </div>
+                <!-- Menyiapkan tempat menggunakan Chart.JS -->
                 <div class="card-body d-flex align-items-center justify-content-center">
                     <div style="position: relative; height: 400px; width: 100%;">
                         <canvas id="aktivitasPeminjamanChart"></canvas>
@@ -84,7 +95,9 @@
         </div>
     </div>
 
+    <!-- Menampilkan Statistik Berbasis Tabel & Chart -->
     <div class="row g-3 mt-2">
+        <!-- Menampilkan Top 5 Buku Terpopuler (Sering Dipinjam) mennggunakan Table -->
         <div class="col-12 col-lg-6">
             <div class="card h-100">
                 <div class="card-header pb-0">
@@ -102,26 +115,34 @@
                             <tbody>
                                 @foreach($bukuPopuler as $index => $buku)
                                     <tr class="border-bottom border-light-subtle">
+                                        <!-- Menampilkan Sistem Penomoran Baris -->
                                         <td class="text-center fw-bold">
+                                            <!-- Jika Nomor 1, Menggunakan Emoji Trofi Piala -->
                                             @if($index == 0)
                                                 <span class="fs-4">🏆</span>
+                                            <!-- Jika Nomor 2, Menggunakan Emoji Medali Silver -->
                                             @elseif($index == 1)
                                                 <span class="fs-4">🥈</span>
+                                            <!-- Jika Nomor 3, Menggunakan Emoji Medai Perunggu -->
                                             @elseif($index == 2)
                                                 <span class="fs-4">🥉</span>
+                                            <!-- Menggunakan angka biasa jika bukan nomor 1, 2 dan 3 -->
                                             @else
                                                 <span class="text-secondary ms-1" style="font-size: 0.9rem;">#{{ $index + 1 }}</span>
                                             @endif
                                         </td>
+
+                                        <!-- Menampilkan Data Buku dengan Jumlah Dipinjam -->
                                         <td> 
                                             <div class="d-flex align-items-center gap-3">
-                                                <img src="{{ $buku->photoUrl ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=200&auto=format&fit=crop&q=60' }}" 
-                                                    alt="Cover" class="rounded shadow-sm border border-secondary border-opacity-10 dash-book-img" 
-                                                    style="width: 32px; height: 46px; object-fit: cover; flex-shrink: 0;">
+                                                <!-- Menampilkan Cover Buku -->
+                                                <img src="{{ $buku->photoUrl ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=200&auto=format&fit=crop&q=60' }}" alt="Cover" class="rounded shadow-sm border border-secondary border-opacity-10 dash-book-img" style="width: 32px; height: 46px; object-fit: cover; flex-shrink: 0;">
+
                                                 <div class="flex-grow-1">
-                                                    <div class="fw-semibold text-dark-theme-white dash-book-title" title="{{ $buku->judul }}">
-                                                        {{ $buku->judul }}
-                                                    </div>
+                                                    <!-- Menampilkan Judul Buku -->
+                                                    <div class="fw-semibold text-dark-theme-white dash-book-title" data-bs-toggle="tooltip" title="{{ $buku->judul }}">{{ $buku->judul }}</div>
+
+                                                    <!-- Menampilkan Jumlah Berapa kali dipinjam -->
                                                     <small class="text-muted d-block" style="font-size: 0.72rem;">Dipinjam {{ $buku->detail_peminjamans_count }} kali</small>
                                                 </div>
                                             </div>
@@ -135,11 +156,13 @@
             </div>
         </div>
 
+        <!-- Chart: Menampilkan Status Ketersediaan Stok Buku (Tersedia / Sedang Dipinjam / Terlambat) Menggunakan Tipe Chart: Pie -->
         <div class="col-12 col-lg-6">
             <div class="card h-100">
                 <div class="card-header text-center">
                     <h4>Status Ketersediaan Stok Buku</h4>
                 </div>
+                <!-- Menyiapkan tempat untuk chart menggunakan Chart.JS -->
                 <div class="card-body d-flex align-items-center justify-content-center">
                     <div style="position: relative; height: 400px; width: 100%;">
                         <canvas id="statusKetersediaanStokBukuChart"></canvas>
@@ -152,8 +175,10 @@
 
 @push('scripts')
     <script>
+        // Memanggil elemen canvas Statistik Perpustakaan
         const ctx1 = document.getElementById('mainDashboardChart').getContext('2d');
             
+        // Memanggil Chart.JS untuk menampilkan chart yang kemudian di tampilkan pada tempat yang telah dipanggil 
         new Chart(ctx1, {
             type: 'bar',
             data: {
@@ -209,15 +234,21 @@
             }
         });
 
+        // Menngonversi tipe data dari PHP menjadi JSON untuk dibaca Javascript
+        // Fungsi {{ }} agar isi data nya tidak berubah 
+        // Fungsi json_encode untuk mengonversi tipe data menjadi JSON agar dapat dibaca oleh Javascript
         const labelTanggal = {!! json_encode($chartLabelTotalPeminjaman) !!};
         const dataTotal = {!! json_encode($chartDataTotalPeminjaman) !!};
 
+        // Memanggil elemen canvas Aktivitas Peminjaman
         const ctx2 = document.getElementById('aktivitasPeminjamanChart').getContext('2d');
 
+        // Untuk membuat efek warna gradiasi
         const gradient = ctx2.createLinearGradient(0, 0, 0, 300);
         gradient.addColorStop(0, 'rgba(67, 94, 190, 0.35)');
         gradient.addColorStop(1, 'rgba(67, 94, 190, 0.01)');
 
+        // Memanggil Chart.JS untuk menampilkan chart yang kemudian di tampilkan pada tempat yang telah dipanggil 
         new Chart(ctx2, {
             type: 'line',
             data: {
@@ -257,11 +288,14 @@
             }
         });
 
+        // Menngonversi tipe data dari PHP menjadi JSON untuk dibaca Javascript
         const labelsPie = {!! json_encode($pieLabels) !!};
         const dataPie = {!! json_encode($pieValues) !!};
 
+        // Memanggil elemen canvas Status Ketersediaan
         const ctxPie3 = document.getElementById('statusKetersediaanStokBukuChart').getContext('2d');
         
+         // Memanggil Chart.JS untuk menampilkan chart yang kemudian di tampilkan pada tempat yang telah dipanggil 
         new Chart(ctxPie3, {
             type: 'pie',
             data: {

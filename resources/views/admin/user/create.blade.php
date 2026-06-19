@@ -1,11 +1,13 @@
 @extends('admin.layouts.main')
 
+<!-- Memberikan keterangan "Tambah Anggota" pada Judul Halaman -->
 @section('current-page','Tambah Anggota')
 
 @section('content')
     <div class="card">
         <div class="card-body">
             <div class="card-content">
+                <!-- Menampilkan alert error jika ada error input -->
                 @if($errors->any())
                     <div class="alert alert-danger alert-dismissible show fade pb-1" role="alert">
                         <ul>
@@ -18,8 +20,10 @@
                     </div>
                 @endif
                 
+                <!-- Form Tambah Anggota -->
                 <form class="form" method="POST" action="{{ route('admin.user.store') }}" enctype="multipart/form-data" onsubmit="tampilLoadingAnimation(this)">
                     <div class="row">
+                        <!-- Input Nama Anggota -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="nama-column">Nama Anggota</label>
@@ -34,6 +38,7 @@
                             </div>
                         </div>
 
+                        <!-- Input Username Anggota -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="username-column">Username</label>
@@ -47,7 +52,8 @@
                                 </div>
                             </div>
                         </div>
-                                
+
+                        <!-- Input Email Anggota -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="email-column">Email</label>
@@ -62,6 +68,7 @@
                             </div>
                         </div>
 
+                        <!-- Input Nomor Telp Anggota -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="nomorTelp-column">Nomor Telp</label>
@@ -76,6 +83,7 @@
                             </div>
                         </div>
 
+                        <!-- Pilih Jenis Kelamin Anggota -->
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="jenis-kelamin-column">Jenis Kelamin</label>
@@ -94,6 +102,7 @@
                             </div>
                         </div>
 
+                        <!-- Input Alamat Anggota -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="alamat-column">Alamat</label>
@@ -108,6 +117,7 @@
                             </div>
                         </div>
 
+                        <!-- Input Password Anggota -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="password-column">Password</label>
@@ -121,12 +131,15 @@
                                 </div>
                             </div>
                         </div>
-                                
+
+                        <!-- Menu Button -->
                         <div class="col-12 d-flex flex-wrap justify-content-end gap-2 mt-3">
+                            <!-- Button untuk Kembali ke Manage Anggota -->
                             <a href="{{ route('admin.user.index') }}" class="btn btn-warning text-white align-items-center fw-semibold px-3 py-2">
                                 <i class="bi bi-arrow-left me-1"></i> Kembali ke List
                             </a>
-                                    
+
+                            <!-- Button untuk Submit / Tambah Anggota -->
                             <button type="submit" class="btn btn-primary fw-semibold align-items-center px-3 py-2">
                                 <span id="text-button">
                                     <i class="bi bi-pencil-square me-1"></i>Tambah Anggota
@@ -135,6 +148,7 @@
                                 <span id="text-loading" class="d-none">Loading...</span>   
                             </button>
 
+                            <!-- Button untuk Reset Input -->
                             <button type="reset" class="btn btn-danger text-white align-items-center fw-semibold px-3 py-2">
                                 <i class="bi bi-arrow-repeat me-1"></i>Reset
                             </button>

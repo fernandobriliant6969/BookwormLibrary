@@ -1,9 +1,11 @@
 @extends('layouts.main')
 
+<!-- Memberikan keterangan "Dashboard Member" pada Judul Halaman -->
 @section('current-page','Dashboard Member')
 
 @push('styles')
     <style>
+        /* Menyembunyikan Scrollbar pada Table */
         .table-responsive {
             -ms-overflow-style: none;
             scrollbar-width: none;
@@ -15,6 +17,7 @@
     <div class="page-content">
         <div class="row">
             <div class="col-12">
+                <!-- Jika ada Peminjaman Terlambat, Maka muncul Alert Danger yang memberitahu bahwa ada peminjaman yang melewati tanggal kembali -->
                 @if($isTerlambat)
                     <div class="alert alert-danger alert-dismissible show fade mb-4 ms-2 p-3">                    
                         <table style="width: 100%; border: none; background: transparent; border-collapse: collapse;">
@@ -36,6 +39,9 @@
         </div>
 
         <div class="row g-2">
+            <!-- Menampilkan Statistik Anggota Per Card: di PC/Laptop 1 baris 3 card, di Tablet 1 baris 2 Card & di HP 1 baris 1 card -->
+
+            <!-- Card: Menampilkan Total Buku yang pernah Dipinjam -->
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card">
                     <div class="card-body">
@@ -53,6 +59,7 @@
                 </div>
             </div>
 
+            <!-- Card: Menampilkan Jumlah Buku yang sedang dipinjam -->
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card">
                     <div class="card-body">
@@ -70,6 +77,7 @@
                 </div>
             </div>
 
+            <!-- Card: Menampilkan Total Peminjaman -->
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="card">
                     <div class="card-body">
@@ -88,13 +96,16 @@
             </div>
         </div>
 
+        <!-- Menampilkan Chart -->
         <div class="row g-3">
+            <!-- Chart: Aktivitas Peminjaman 30 Hari Terakhir Menggunakan Tipe Chart: Line-->
             <div class="col-12 col-lg-6">
                 <div class="card h-100">
                     <div class="card-header">
                         <h4>Aktivitas Peminjaman - 30 Hari Terakhir</h4>
                     </div>
                     <div class="card-body">
+                        <!-- Menyiapkan tempat untuk chart menggunakan Chart.JS -->
                         <div style="position: relative; height: 300px; width: 100%;">
                             <canvas id="chart-peminjaman-bulan"></canvas>
                         </div>
@@ -102,11 +113,13 @@
                 </div>
             </div>
 
+            <!-- Chart: Genre Terfavorit (Genre Terbanyak dari Buku yang dipinjam) menggunakan Tipe Chart: Pie -->
             <div class="col-12 col-lg-6">
                 <div class="card h-100">
                     <div class="card-header">
                         <h4>Genre Terfavorit</h4>
                     </div>
+                    <!-- Menyiapkan tempat untuk chart menggunakan Chart.JS -->
                     <div class="card-body d-flex align-items-center justify-content-center">
                         <div style="position: relative; height: 300px; width: 100%;">
                             <canvas id="chart-donut-genre"></canvas>
@@ -116,7 +129,9 @@
             </div>
         </div>
 
+        <!-- Table: Menampilkan Data Perpustakaan -->
         <div class="row g-3 mt-2">
+            <!-- Menampilkan Top 5 Buku Terpopuler (Sering Dipinjam) -->
             <div class="col-12 col-lg-6">
                 <div class="card h-100">
                     <div class="card-header pb-0">
@@ -134,30 +149,38 @@
                                 <tbody>
                                     @foreach($bukuPopuler as $index => $buku)
                                         <tr class="border-bottom border-light-subtle">
+                                            <!-- Menampilkan Sistem Penomoran Baris -->
                                             <td class="text-center fw-bold">
                                                 @if($index == 0)
+                                                <!-- Jika Nomor 1, Menggunakan Emoji Trofi Piala -->
                                                     <span class="fs-4">🏆</span>
+                                                <!-- Jika Nomor 2, Menggunakan Emoji Medali Silver -->
                                                 @elseif($index == 1)
                                                     <span class="fs-4">🥈</span>
+                                                <!-- Jika Nomor 3, Menggunakan Emoji Medai Perunggu -->
                                                 @elseif($index == 2)
                                                     <span class="fs-4">🥉</span>
                                                 @else
+                                                <!-- Menggunakan angka biasa jika bukan nomor 1, 2 dan 3 -->
                                                     <span class="text-secondary ms-1" style="font-size: 0.9rem;">#{{ $index + 1 }}</span>
                                                 @endif
                                             </td>
+
+                                            <!-- Menampilkan Data Buku dengan Jumlah Dipinjam -->
                                             <td> 
                                                 <div class="d-flex align-items-center gap-3">
+                                                    <!-- Menampilkan Cover Buku -->
                                                     <img src="{{ $buku->photoUrl ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=200&auto=format&fit=crop&q=60' }}" 
                                                         alt="Cover" class="rounded shadow-sm border border-secondary border-opacity-10 dash-book-img" 
                                                         style="width: 32px; height: 46px; object-fit: cover; flex-shrink: 0;">
 
                                                     <div class="flex-grow-1">
-                                                        <div class="fw-semibold text-dark-theme-white dash-book-title" title="{{ $buku->judul }}">
-                                                            {{ $buku->judul }}
-                                                        </div>
+                                                        <!-- MEnampilkan Judul Buku -->
+                                                        <div class="fw-semibold text-dark-theme-white dash-book-title" data-bs-toggle="tooltip" title="{{ $buku->judul }}">{{ $buku->judul }}</div>
+
+                                                        <!-- Menampilkan Jumlah Berapa kali dipinjam -->
                                                         <small class="text-muted d-block" style="font-size: 0.72rem;">Dipinjam {{ $buku->detail_peminjamans_count }} kali</small>
                                                     </div>
-
                                                 </div>
                                             </td>
                                         </tr>
@@ -169,6 +192,7 @@
                 </div>
             </div>
 
+            <!-- Menampilkan Top 5 Buku dengan Review Tertinggi (Terbagus) -->
             <div class="col-12 col-lg-6">
                 <div class="card h-100">
                     <div class="card-header pb-0">
@@ -188,31 +212,41 @@
                                     @foreach($bukuRatingTertinggi as $index => $buku)
                                     <tr class="border-bottom border-light-subtle">
                                         <td class="text-center fw-bold">
+                                            <!-- Jika Nomor 1, Menggunakan Emoji Trofi Piala -->
                                             @if($index == 0)
                                                 <span class="fs-4">🏆</span>
+                                            <!-- Jika Nomor 2, Menggunakan Emoji Medali Silver -->
                                             @elseif($index == 1)
                                                 <span class="fs-4">🥈</span>
+                                            <!-- Jika Nomor 3, Menggunakan Emoji Medai Perunggu -->
                                             @elseif($index == 2)
                                                 <span class="fs-4">🥉</span>
+                                            <!-- Menggunakan angka biasa jika bukan nomor 1, 2 dan 3 -->
                                             @else
                                                 <span class="text-secondary ms-1" style="font-size: 0.9rem;">#{{ $index + 1 }}</span>
                                             @endif
                                         </td>
+
+                                        <!-- Menampilkan Data Buku dengan Rating -->
                                         <td> 
                                             <div class="d-flex align-items-center gap-3">
-                                                <img src="{{ $buku->photoUrl ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=200&auto=format&fit=crop&q=60' }}" 
-                                                    alt="Cover" class="rounded shadow-sm border border-secondary border-opacity-10 dash-book-img" 
-                                                    style="width: 32px; height: 46px; object-fit: cover; flex-shrink: 0;">
+                                                <!-- Menampilkan Cover Buku -->
+                                                <img src="{{ $buku->photoUrl ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=200&auto=format&fit=crop&q=60' }}" alt="Cover" class="rounded shadow-sm border border-secondary border-opacity-10 dash-book-img" style="width: 32px; height: 46px; object-fit: cover; flex-shrink: 0;">
 
                                                 <div class="flex-grow-1">
+                                                    <!-- MEnampilkan Judul Buku -->
                                                     <div class="fw-semibold text-dark-theme-white dash-book-title" data-bs-toggle="tooltip" title="{{ $buku->judul }}">
                                                         {{ $buku->judul }}
                                                     </div>
+                                                    
+                                                    <!-- Menampilkan Jumlah Reviwer -->
                                                     <small class="text-muted d-block" style="font-size: 0.72rem;">{{ $buku->review_count }} Review</small>
                                                 </div>
 
                                             </div>
                                         </td>
+
+                                        <!-- Menampilkan Rating Bintang -->
                                         <td class="text-center">
                                             <div class="d-inline-flex align-items-center justify-content-center px-2 py-1 rounded bg-warning bg-opacity-10 border border-warning border-opacity-25">
                                                 <i class="bi bi-star-fill text-warning me-1 d-inline-flex"></i>
@@ -235,15 +269,19 @@
 
 @push('scripts')
     <script>
+        // Menngonversi tipe data dari PHP menjadi JSON untuk dibaca Javascript
         const labelTanggal = {!! json_encode($chartLabels) !!};
         const dataTotal = {!! json_encode($chartData) !!};
 
+        // Memanggil elemen canvas Aktivitas Peminjaman
         const ctx = document.getElementById('chart-peminjaman-bulan').getContext('2d');
 
+        // Untuk membuat efek warna gradiasi
         const gradient = ctx.createLinearGradient(0, 0, 0, 300);
         gradient.addColorStop(0, 'rgba(67, 94, 190, 0.35)');
         gradient.addColorStop(1, 'rgba(67, 94, 190, 0.01)');
 
+        // Memanggil Chart.JS untuk menampilkan chart yang kemudian di tampilkan pada tempat yang telah dipanggil 
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -283,17 +321,21 @@
             }
         });
 
+        // Menngonversi tipe data dari PHP menjadi JSON untuk dibaca Javascript
         const labelGenre = {!! json_encode($donutLabels) !!};
         const dataGenre = {!! json_encode($donutValues) !!};
 
+        // Memanggil elemen canvas Genre Terfavorit
         const ctxDonut = document.getElementById('chart-donut-genre').getContext('2d');
 
+        // Menambah keterangan chart jika tidak ada data
         const finalLabels = labelGenre.length > 0 ? labelGenre : ['Belum ada data'];
         const finalData = dataGenre.length > 0 ? dataGenre : [1];
         const finalColors = labelGenre.length > 0 
             ? ['#435ebe', '#198754', '#0dcaf0', '#ffc107', '#fd7e14', '#6f42c1'] 
             : ['#6c757d'];
 
+        // Memanggil Chart.JS untuk menampilkan chart yang kemudian di tampilkan pada tempat yang telah dipanggil 
         new Chart(ctxDonut, {
             type: 'doughnut',
             data: {

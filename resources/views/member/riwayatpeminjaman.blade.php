@@ -1,5 +1,6 @@
 @extends('layouts.main')
 
+<!-- Memberikan keterangan "Riwayat Peminjaman" pada Judul Halaman -->
 @section('current-page','Riwayat Peminjaman')
 
 @section('content')
@@ -8,11 +9,13 @@
             <div class="card">
                 <div class="card-content">
                     <div class="card">
+                        <!-- Jika belum ada data peminjaman -->
                         @if($peminjaman->isEmpty())
                             <div class="card-body d-flex align-items-center">
                                 <i class="bi bi-info-circle d-inline-flex me-3 align-items-center"></i>
                                 <span>Belum ada peminjaman, Yuk lakukan peminjaman pertama!</span>
                             </div>
+                        <!-- Jika ada data peminjaman, tampil data menggunakan data -->
                         @else
                             <div class="card-header d-lg-none">
                                 <h4 class="card-title">Riwayat Peminjaman</h4>
@@ -32,25 +35,28 @@
                                         <tbody>
                                             @foreach($peminjaman as $index => $pinjam)
                                                 <tr class="border-bottom border-light-subtle">
+                                                    <!-- Sistem Penomoran Baris -->
                                                     <td class="text-center fw-semibold text-secondary">{{ $peminjaman->firstItem() + $index }}</td>
+
+                                                    <!-- Menampilkan buku dalam peminjaman -->
                                                     <td>
                                                         <ul class="list-group list-group-flush mb-0 bg-transparent">
                                                             @foreach($pinjam->details as $detail)
                                                                 <li class="list-group-item d-flex justify-content-between align-items-center p-2 bg-transparent border-0">
                                                                     <div class="d-flex align-items-center me-3 text-truncate" style="max-width: 75%;">
                                                                         
+                                                                        <!-- Menampilkan Cover Buku -->
                                                                         <div class="flex-shrink-0 me-2">
-                                                                            <img src="{{ $detail->buku->photoUrl ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=200&auto=format&fit=crop&q=60' }}" 
-                                                                                alt="Cover {{ $detail->buku->judul }}" 
-                                                                                class="rounded shadow-sm border border-secondary border-opacity-25"
-                                                                                style="width: 32px; height: 45px; object-fit: cover;">
+                                                                            <img src="{{ $detail->buku->photoUrl ?? 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=200&auto=format&fit=crop&q=60' }}" alt="Cover {{ $detail->buku->judul }}" class="rounded shadow-sm border border-secondary border-opacity-25" style="width: 32px; height: 45px; object-fit: cover;">
                                                                         </div>
 
+                                                                        <!-- Menampilkan Judul Buku -->
                                                                         <div class="text-truncate fw-medium text-dark-theme-white" style="font-size: 0.88rem;" title="{{ $detail->buku->judul }}">
                                                                             {{ $detail->buku->judul }}
                                                                         </div>
                                                                     </div>
-                                                                        
+
+                                                                    <!-- Menampilkan Status Buku (Dpinjam /  Dikembalikan) -->
                                                                     <div class="flex-shrink-0">
                                                                         @if($detail->status == 'dipinjam')
                                                                             <span class="badge bg-primary text-white fw-semibold px-2 py-1" style="font-size: 0.72rem;">Dipinjam</span>
@@ -63,6 +69,7 @@
                                                         </ul>
                                                     </td>
                                                     
+                                                    <!-- Menampilkan Periode Peminjaman (Menggunakan Carbon utuk Mengonversi data Tanggal Peminjaman menggunakan format (d M Y)) -->
                                                     <td>
                                                         <div style="font-size: 0.85rem;" class="lh-sm">
                                                             <span class="d-block fw-semibold text-success-emphasis"><i class="bi bi-calendar-plus me-1"></i> {{ \Carbon\Carbon::parse($pinjam->tanggalPeminjaman)->format('d M Y') }}</span>
@@ -70,7 +77,8 @@
                                                             <span class="badge bg-secondary-subtle text-secondary-emphasis mt-2 fw-medium px-2 py-1">{{ $pinjam->lamaPinjam }} Hari</span>
                                                         </div>
                                                     </td>
-                                                        
+
+                                                    <!-- Menampilkan jumlah denda -->
                                                     <td class="text-center">
                                                         @if($pinjam->denda()->exists())
                                                             @if($pinjam->denda->jumlahDenda > 0)
@@ -83,6 +91,7 @@
                                                         @endif
                                                     </td>
 
+                                                    <!-- Menampilkan Status Peminjaman menggunakan Badge -->
                                                     <td class="text-center">
                                                         @if($pinjam->status == 'Aktif')
                                                             <span class="badge bg-primary text-white fw-bold px-3 py-2 rounded-pill 6shadow-sm" style="font-size: 0.75rem;">Aktif</span>
@@ -101,6 +110,7 @@
                                 </div>
 
                                 <div class="d-flex justify-content-center align-items-center mt-3">
+                                    <!-- Jika total ;eminjaman kurang dari 24, hanya menampilkan contoh "Menampilkan 1 sampai 10 dari 10 hasil" -->
                                     @if($peminjaman->total() <= 10)
                                         <nav class="d-flex align-items-center justify-content-between w-100 mt-4" style="width: 100% !important;">
                                             <div class="d-flex flex-column flex-sm-row align-items-center justify-content-between gap-3 w-100">
@@ -115,6 +125,7 @@
                                                 </div>
                                             </div>
                                         </nav>
+                                    <!-- Jika total peminjaman lebih dari 10, gunakan pagination bawaan laravel -->
                                     @else
                                         {{ $peminjaman->links('pagination::bootstrap-5') }}
                                     @endif

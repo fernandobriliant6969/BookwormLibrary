@@ -1,7 +1,9 @@
+<!-- Jika role anggota Member, Gunakan Layout Main khusus Member dan Jika role anggota Admin, Gunakan Layout Main khusus Admin -->
 @extends(auth()->user()->role == 'member' ? 'layouts.main' : 'admin.layouts.main')
 
 @section('content')
     <div class="row">
+        <!-- Menu: Update Password -->
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
@@ -9,6 +11,7 @@
                 </div>
 
                 <div class="card-body">
+                    <!-- Menampilkan alert error jika ada error input pada Update Password-->
                     @if($errors->passwordError->any())
                         <div class="alert alert-danger alert-dismissible show fade pb-1" role="alert">
                             <ul>
@@ -21,28 +24,33 @@
                         </div>
                     @endif
 
+                    <!-- Form Update Password -->
                     <form action="{{ route('profile.security.updatePassword', auth()->user()->idUser) }}" method="POST" onsubmit="tampilLoadingAnimation(this)">
                         @csrf
                         @method('PUT')
 
+                        <!-- Input Password Saat ini -->
                         <div class="form-group my-2">
                             <label for="current_password" class="form-label">Password saat ini</label>
 
                             <input type="password" name="current_password" id="current_password" class="form-control" placeholder="Masukkan password saat ini">
                         </div>
 
+                        <!-- Input Password Baru -->
                         <div class="form-group my-2">
                             <label for="password" class="form-label">Password baru</label>
 
                             <input type="password" name="password" id="password" class="form-control" placeholder="Masukkan password baru">
                         </div>
 
+                        <!-- Input Password Konfirmasi Baru -->
                         <div class="form-group my-2">
                             <label for="password_confirmation" class="form-label">Password baru untuk konfirmasi</label>
 
                             <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Ulangi password baru">
                         </div>
 
+                        <!-- Button untuk Update Password -->
                         <div class="form-group mt-3 d-flex justify-content-end">
                             <button type="submit" class="btn btn-primary fw-semibold">
                                 <span id="text-button">
@@ -57,6 +65,7 @@
             </div>
         </div>
 
+        <!-- Menu: Update Email -->
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
@@ -64,6 +73,7 @@
                 </div>
 
                 <div class="card-body">
+                    <!-- Menampilkan alert error jika ada error input pada Update Email -->
                     @if($errors->emailError->any())
                         <div class="alert alert-danger alert-dismissible show fade pb-1" role="alert">
                             <ul>
@@ -76,21 +86,25 @@
                         </div>
                     @endif
 
+                    <!-- Form Updat Email -->
                     <form action="{{ route('profile.security.updateEmail', auth()->user()->idUser) }}" method="POST" onsubmit="tampilLoadingAnimation(this)">
                         @csrf
                         @method('PUT')
 
+                        <!-- Input Email Baru -->
                         <div class="form-group my-2">
                             <label for="email" class="form-label">Email Baru</label>
 
                             <input type="email" name="email" id="email" class="form-control" placeholder="Masukkan email baru" value="{{ old('email', auth()->user()->email) }}">
                         </div>
 
+                        <!-- Input Konfirmasi Password -->
                         <div class="form-group my-2">
                             <label for="password_verify" class="form-label">Konfirmasi Password</label>
                             <input type="password" name="password_verify" id="password_verify" class="form-control" placeholder="Masukkan password saat ini untuk verifikasi ganti email">
                         </div>
 
+                        <!-- Button untuk Update Email -->
                         <div class="form-group mt-3 d-flex justify-content-end">
                             <button type="submit" class="btn btn-primary fw-semibold">
                                 <span id="text-button">
@@ -105,6 +119,7 @@
             </div>
         </div>
 
+        <!-- Menu: Hapus Akun -->
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
@@ -114,6 +129,7 @@
                 <div class="card-body">
                     <p class="text-danger fw-semibold">Akun Anda akan dihapus secara permanen dari sistem perpustakaan dan tidak bisa dikembalikan.</p>
 
+                    <!-- Checkbox: Ketike checkbox di klik, Maka button Hapus Akun akan diaktifkan -->
                     <div class="form-check">
                         <div class="checkbox">
                             <input type="checkbox" id="iaggree" class="form-check-input">
@@ -122,6 +138,7 @@
                         </div>
                     </div>
 
+                    <!-- Button untuk Hapus Akun -->
                     <div class="form-group my-2 d-flex justify-content-end">
                         <form method="POST" action="{{ route('profile.security.deleteAccount', auth()->user()->idUser) }}" onsubmit="displayAlert(event, this, 'Apakah anda yakin ingin menghapus akun ini? Semua riwayat peminjaman, review dan aktivitas anda akan hilang selamanya!', 'warning')">
                             @csrf
@@ -138,6 +155,7 @@
 @endsection
 
 @push('scripts')
+    <!-- Script untuk trigger checkbox -->
     <script>
         const checkboxAgree = document.getElementById('iaggree');
         const btnDeleteAccount = document.getElementById('btn-delete-account');
