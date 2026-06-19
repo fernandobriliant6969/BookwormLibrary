@@ -1,5 +1,6 @@
 @extends('admin.layouts.main')
 
+<!-- Memberikan keterangan "Tambah Genre" pada Judul Halaman -->
 @section('current-page', 'Tambah Genre')
 
 @section('content')
@@ -7,9 +8,11 @@
         <div class="card">
             <div class="card-content">
                 <div class="card-body">
+                    <!-- Form Tambah Genre -->
                     <form class="form" method="POST" action="{{ route('admin.genre.store') }}" onsubmit="tampilLoadingAnimation(this)">
                         @csrf
 
+                        <!-- Menampilkan alert error jika ada error input -->
                         <div class="row">
                             @if($errors->any())
                                 <div class="alert alert-danger alert-dismissible show fade pb-1" role="alert">
@@ -22,6 +25,7 @@
                                 </div>
                             @endif
 
+                            <!-- Input Nama Genre -->
                             <div class="col-12">
                                 <div class="form-group has-icon-left">
                                     <label for="nama-genre">Nama Genre</label>
@@ -34,6 +38,7 @@
                                 </div>
                             </div>
 
+                            <!-- Input Deskripsi Genre -->
                             <div class="col-12">
                                 <div class="form-group has-icon-left">
                                     <label for="deskripsi-genre">Deskripsi Genre</label>
@@ -46,11 +51,14 @@
                                 </div>
                             </div>
 
+                            <!-- Menu Button -->
                             <div class="col-12 d-flex flex-wrap justify-content-end gap-2 mt-3">
+                                <!-- Button untuk Kembali ke Manage Genre -->
                                 <a href="{{ route('admin.genre.index') }}" class="btn btn-warning text-white align-items-center fw-semibold px-3 py-2">
                                     <i class="bi bi-arrow-left me-1"></i> Kembali ke List
                                 </a>
                                 
+                                <!-- Button untuk Submit / Tambah Genre -->
                                 <button type="submit" class="btn btn-primary align-items-center fw-semibold px-3 py-2">
                                     <span id="text-button">
                                         <i class="bi bi-pencil-square me-1"></i>Tambah Genre
@@ -59,6 +67,7 @@
                                     <span id="text-loading" class="d-none">Loading...</span>   
                                 </button>
                             
+                                <!-- Button untuk Reset Input -->
                                 <button type="reset" class="btn btn-danger text-white align-items-center px-3 py-2">
                                     <i class="bi bi-arrow-repeat me-1"></i>Reset
                                 </button>

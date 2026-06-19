@@ -5,12 +5,14 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bukuDisplay.css') }}">
 @endpush
 
+<!-- Memberikan keterangan "Tambah Peminjaman" pada Judul Halaman -->
 @section('current-page','Tambah Peminjaman')
 
 @section('content')
     <div class="card">
         <div class="card-body">
             <div class="card-content">
+                <!-- Menampilkan alert error jika ada error input -->
                 @if($errors->any())
                     <div class="alert alert-danger alert-dismissible show fade pb-1" role="alert">
                         <ul>
@@ -23,10 +25,12 @@
                     </div>
                 @endif
 
+                <!-- Form Tambah Peminjaman -->
                 <form action="{{ route('admin.peminjaman.store') }}" method="POST" onsubmit="tampilLoadingAnimation(this)">
                     @csrf
 
                     <div class="row">
+                        <!-- Bagian I : Informasi Peminjam -->
                         <div class="col-lg-6 col-12">
                             <div class="card">
                                 <div class="card-header">
@@ -34,6 +38,7 @@
                                 </div>
 
                                 <div class="card-body">
+                                    <!-- Input / Pilih Nama Anggota menggunakan select Choices -->
                                     <div class="form-group mb-3">
                                         <label class="form-label">Nama Anggota</label>
 
@@ -46,11 +51,13 @@
                                         </select>
                                     </div>
 
+                                    <!-- Inpput Tanggal Pinjam -->
                                     <div class="form-group mb-3">
                                         <label class="form-label">Tanggal Pinjam</label>
                                         <input type="text" class="form-control flatpickr-no-config" name="tanggalPinjam" placeholder="Pilih Tanggal..">
                                     </div>
 
+                                    <!-- Input Lama Pinjam -->
                                     <div class="form-group mb-3">
                                         <label class="form-label">Lama Pinjam (Hari)</label>
 
@@ -61,6 +68,7 @@
                                         </div>
                                     </div>
 
+                                    <!-- Input Catatan / Keterangan -->
                                     <div class="form-group mb-3">
                                         <label class="form-label">Catatan / Keterangan <small class="text-muted">(Opsional)</small></label>
                                         <textarea class="form-control" name="keterangan" rows="3" placeholder="Tulis catatan tambahan jika ada..."></textarea>
@@ -69,6 +77,7 @@
                             </div>
                         </div>
 
+                        <!-- Bagian II : Buku yang Dipinjam -->
                         <div class="col-lg-6 col-12">
                             <div class="card">
                                 <div class="card-header">
@@ -76,6 +85,7 @@
                                 </div>
 
                                 <div class="card-body">
+                                    <!-- Input / Pilih Buku yang ingin dipinjam menggunakan Choices -->
                                     <div class="form-group mb-4">
                                         <label class="form-label">Pilih Buku</label>
 
@@ -92,11 +102,14 @@
 
                                     <hr>
 
+                                    <!-- Menu Button -->
                                     <div class="d-flex flex-wrap justify-content-end gap-2 mt-3">
+                                        <!-- Button untuk Kembali ke Manage (List) Peminjaman -->
                                         <a href="{{ route('admin.peminjaman.index') }}" class="btn btn-warning text-white align-items-center fw-semibold px-3 py-2">
                                             <i class="bi bi-arrow-left me-1"></i> Kembali ke List
                                         </a>
 
+                                        <!-- Button untuk Submit / Tambah Peminjaman -->
                                         <button type="submit" class="btn btn-primary align-items-center fw-semibold">
                                             <span id="text-button">
                                                 <i class="bi bi-pencil-square me-1"></i>Tambah Peminjaman
@@ -117,6 +130,7 @@
 
 @push('scripts')
     <script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.min.js') }}"></script>
+    <!-- Script untuk memanggil Choices -->
     <script>
         let choicesInput = document.querySelectorAll('.choices');
         let initChoices;

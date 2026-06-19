@@ -217,32 +217,31 @@
         // Untuk mengambil cover buku dari database dan memasukkan ke filepond agar bisa di hapus atau ditambah cover baru
         const inputElement = document.querySelector('#pond-cover');
             
-            const pond = FilePond.create(inputElement, {
-                credits: false,
-                storeAsFile: true,
-                name: 'photoUrl'        
-            });
+        const pond = FilePond.create(inputElement, {
+            credits: false,
+            storeAsFile: true,
+            name: 'photoUrl'        
+        });
 
-            @if($buku->photoUrl)
-                pond.setOptions({
-                    files: [
-                        {
-                            source: '{{ $buku->photoUrl }}',
-                            options: {
-                                type: 'local',
-                            }
-                        }
-                    ],
-                    server: {
-                        load: (source, load, error, progress, abort, headers) => {
-                            fetch(`/buku/proxy-cover?url=${encodeURIComponent(source)}`)
-                                .then(res => res.blob())
-                                .then(load)
-                                .catch(error);
+        @if($buku->photoUrl)
+            pond.setOptions({
+                files: [
+                    {
+                        source: '{{ $buku->photoUrl }}',
+                        options: {
+                            type: 'local',
                         }
                     }
-                });
-            @endif
-        });
+                ],
+                server: {
+                    load: (source, load, error, progress, abort, headers) => {
+                        fetch(`/buku/proxy-cover?url=${encodeURIComponent(source)}`)
+                            .then(res => res.blob())
+                            .then(load)
+                            .catch(error);
+                    }
+                }
+            });
+        @endif
     </script>
 @endpush

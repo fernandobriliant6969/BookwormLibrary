@@ -1,16 +1,19 @@
 @extends('admin.layouts.main')
 
+<!-- Memberikan keterangan "Edit Genre: (Nama Genre)" pada Judul Halaman -->
 @section('current-page', 'Edit Genre: ' . $genre->nama)
 
 @section('content')
     <div class="card">
         <div class="card-body">
             <div class="card-content">
+                <!-- Form Edit Genre -->
                 <form class="form" method="POST" action="{{ route('admin.genre.update', $genre->idGenre) }}" onsubmit="tampilLoadingAnimation(this)">
                     @method('PUT')
                     @csrf
 
                     <div class="row">
+                        <!-- Menampilkan alert error jika ada error input -->
                         @if($errors->any())
                             <div class="alert alert-danger alert-dismissible show fade pb-1" role="alert">
                                 <ul>
@@ -23,6 +26,7 @@
                             </div>
                         @endif
 
+                        <!-- Input Nama Genre -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="nama-genre">Nama Genre</label>
@@ -35,6 +39,7 @@
                             </div>
                         </div>
 
+                        <!-- Input Deskripsi Genre -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="deskripsi-genre">Deskripsi Genre</label>
@@ -47,11 +52,14 @@
                             </div>
                         </div>
 
+                        <!-- Menu Button -->
                         <div class="col-12 d-flex flex-wrap justify-content-end gap-2 mt-3">
+                            <!-- Button untuk Kembali ke Manage Genre -->
                             <a href="{{ route('admin.genre.index') }}" class="btn btn-warning text-white fw-semibold px-3 py-2">
                                 Kembali ke List
                             </a>
 
+                            <!-- Button untuk Submit / Edit Genre -->
                             <button type="submit" class="btn btn-primary fw-semibold">
                                 <span id="text-button">Edit Genre</span>
                                 <div id="spinner-loading" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></div>                   

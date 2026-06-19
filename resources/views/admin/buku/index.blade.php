@@ -118,13 +118,9 @@
 
                                         <!-- Cover Buku, Jika ada Cover ditambahkan maka gunakan Cover yang ditambahkan. Jika tidak, maka gunakan template cover -->
                                         <td>
-                                            @if($buku->photoUrl)
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#coverModal{{ $buku->idBuku }}">
-                                                    <img src="{{ $buku->photoUrl }}" alt="Cover {{ $buku->judul }}" class="rounded shadow-sm" style="width: 60px; height: 80px; object-fit: cover; object-position: center;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $buku->judul }}">
-                                                </a>
-                                            @else
-                                                <img src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=200&auto=format&fit=crop&q=60" alt="Default Cover" class="rounded shadow-sm" style="width: 60px; height: 80px; object-fit: cover; object-position: center;">
-                                            @endif
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#coverModal{{ $buku->idBuku }}">
+                                                <img src="{{ $buku->photoUrl ?? "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=200&auto=format&fit=crop&q=60" }}" alt="Cover {{ $buku->judul }}" class="rounded shadow-sm" style="width: 60px; height: 80px; object-fit: cover; object-position: center;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ $buku->judul }}">
+                                            </a>
                                         </td>
 
                                         <!-- Judul Buku -->
@@ -187,7 +183,7 @@
                                                 </div>
 
                                                 <div class="modal-body text-center p-4">
-                                                    <img src="{{ $buku->photoUrl }}" alt="Cover {{ $buku->judul }}" class="img-fluid rounded shadow-lg" style="max-height: 500px; object-fit: contain;">                    
+                                                    <img src="{{ $buku->photoUrl ?? "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=200&auto=format&fit=crop&q=60" }}" alt="Cover {{ $buku->judul }}" class="img-fluid rounded shadow-lg" style="max-height: 500px; object-fit: contain;">                    
 
                                                     <p class="text-muted mt-3 mb-0" style="font-size: 0.85rem;">Author: {{ $buku->pengarang }}</p>
                                                 </div>
