@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="card">
+        <!-- Jika belum ada genre yang belum 
         @if($genres->isEmpty())
             <div class="card-header text-center">
                 <p>Belum ada genre yang ditambahkan</p>
@@ -13,8 +14,8 @@
         @else
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="card-title">Daftar Genre</h4>
-                <a href="{{ route('admin.genre.create') }}" class="btn btn-primary btn-sm">
-                    <i class="bi bi-plus-circle"></i> Tambah Genre
+                <a href="{{ route('admin.genre.create') }}" class="btn btn-primary">
+                    <i class="bi bi-pencil-square me-1"></i>Tambah Genre
                 </a>
             </div>
             <div class="card-body">

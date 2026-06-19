@@ -7,12 +7,14 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bukuDisplay.css') }}">
 @endpush
 
+<!-- Memberikan keterangan "Tambah Buku" pada Judul Halaman -->
 @section('current-page','Tambah Buku')
 
 @section('content')
     <div class="card">
         <div class="card-content">
             <div class="card-body">
+                <!-- Menampilkan alert error jika ada error input -->
                 @if($errors->any())
                     <div class="alert alert-danger alert-dismissible show fade pb-1" role="alert">
                         <ul>
@@ -20,12 +22,16 @@
                                 <li>{{  $error }}</li>
                             @endforeach 
                         </ul> 
-                
+
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
+
+                <!-- Form Create Buku -->
                 <form class="form" method="POST" action="{{ route('admin.buku.store') }}" enctype="multipart/form-data" onsubmit="tampilLoadingAnimation(this)">
-                    <div class="row gap-2">
+                    <div class="row">
+
+                        <!-- Input Judul Buku -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="judul-buku-column">Judul Buku</label>
@@ -40,6 +46,7 @@
                             </div>
                         </div>
 
+                        <!-- Input Pengarang Buku -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="pengarang-column">Pengarang</label>
@@ -54,6 +61,7 @@
                             </div>
                         </div>
 
+                        <!-- Input Penerbit Buku -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="penerbit-column">Penerbit</label>
@@ -68,6 +76,7 @@
                             </div>
                         </div>
 
+                        <!-- Input Tanggal Terbit Buku -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="tanggal-terbit-column">Tanggal Terbit</label>
@@ -82,6 +91,7 @@
                             </div>
                         </div>
 
+                        <!-- Input Jumlah Halaman Buku -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="jumlah-halaman-column">Jumlah Halaman</label>
@@ -96,6 +106,7 @@
                             </div>
                         </div>
 
+                        <!-- Pilih Status Buku (Tersedia/TidakTersedia) -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="status-column" class="form-label">Status</label>                                                                                        
@@ -113,6 +124,7 @@
                             </div>
                         </div>
 
+                        <!-- Input Stok Buku -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="stok-column">Stok</label>
@@ -127,6 +139,7 @@
                             </div>
                         </div>
 
+                        <!-- Pilih Genre dan Bisa Banyak Genre -->
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="genre-column" class="form-label">Genre</label>  
@@ -141,6 +154,7 @@
                             </div>
                         </div>
 
+                        <!-- Upload Cover / Foto Buku -->
                         <div class="col-12">
                             <div class="form-group mb-3">
                                 <label for="foto-buku" class="form-label">Foto Buku</label>
@@ -151,11 +165,14 @@
                             </div>
                         </div>
 
+                        <!-- Menu Button -->
                         <div class="col-12 d-flex flex-wrap justify-content-end gap-2 mt-3">
+                            <!-- Button Kembali ke Manage Buku -->
                             <a href="{{ route('admin.buku.index') }}" class="btn btn-warning text-white align-items-center fw-semibold px-3 py-2">
                                 <i class="bi bi-arrow-left me-1"></i> Kembali ke List
                             </a>
 
+                            <!-- Button Tambah Buku -->
                             <button type="submit" class="btn btn-primary align-items-center fw-semibold px-3 py-2">
                                 <span id="text-button">
                                     <i class="bi bi-pencil-square me-1"></i>Tambah Buku
@@ -164,6 +181,7 @@
                                 <span id="text-loading" class="d-none">Loading...</span>   
                             </button>
 
+                            <!-- Menu Reset Input -->
                             <button type="reset" class="btn btn-danger text-white align-items-center px-3 py-2">
                                 <i class="bi bi-arrow-repeat me-1"></i> Reset
                             </button>
@@ -186,6 +204,7 @@
     <script src="{{ asset('assets/extensions/filepond/filepond.js') }}"></script>
     <script src="{{ asset('assets/static/js/pages/filepond.js') }}"></script>
     <script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.min.js') }}"></script>
+    <!-- Mengubah Select Menu menjadi Choices -->
     <script>
         let choicesInput = document.querySelectorAll('.choices');
         let initChoices;

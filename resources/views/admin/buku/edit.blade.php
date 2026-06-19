@@ -6,12 +6,14 @@
     <link rel="stylesheet" href="{{ asset('assets/extensions/choices.js/public/assets/styles/choices.min.css') }}">
 @endpush
 
+<!-- Memberikan keterangan "Edit Buku: (Judul Buku)" pada Judul Halaman -->
 @section('current-page', 'Edit Buku: ' . $buku->judul)
 
 @section('content')
     <div class="card">
         <div class="card-content">
             <div class="card-body">
+                <!-- Menampilkan alert error jika ada error input -->
                 @if($errors->any())
                     <div class="alert alert-danger alert-dismissible show fade pb-1" role="alert">
                         <ul>
@@ -24,11 +26,13 @@
                     </div>
                 @endif
                 
-                <form class="form" method="POST" action="{{ route('admin.buku.update', $buku->idBuku) }}" enctype="multipart/form-data" onsubmit="tampilLoadingAnimation()">
+                <!-- Form Edit Buku -->
+                <form class="form" method="POST" action="{{ route('admin.buku.update', $buku->idBuku) }}" enctype="multipart/form-data" onsubmit="tampilLoadingAnimation(this)">
                     @method("PUT")
                     @csrf
 
                     <div class="row">
+                        <!-- Input Judul Buku -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="judul-buku-column">Judul Buku</label>
@@ -42,6 +46,7 @@
                             </div>
                         </div>
 
+                        <!-- Input Pengarang Buku -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="pengarang-column">Pengarang</label>
@@ -56,6 +61,7 @@
                             </div>
                         </div>
 
+                        <!-- Input Penerbit Buku -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="penerbit-column">Penerbit</label>
@@ -70,6 +76,7 @@
                             </div>
                         </div>
 
+                        <!-- Input Tanggal Terbit Buku -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="tanggal-terbit-column">Tanggal Terbit</label>
@@ -84,6 +91,7 @@
                             </div>
                         </div>
 
+                        <!-- Input Jumlah Halaman -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="jumlah-halaman-column">Jumlah Halaman</label>
@@ -98,6 +106,7 @@
                             </div>
                         </div>
 
+                        <!-- Pilih Status Buku (Tersedia/Tidak Tersedia) -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="status-column" class="form-label">Status</label>                                                                                        
@@ -115,6 +124,7 @@
                             </div>
                         </div>
 
+                        <!-- Input Stok Buku -->
                         <div class="col-12">
                             <div class="form-group has-icon-left">
                                 <label for="stok-column">Stok</label>
@@ -129,6 +139,7 @@
                             </div>
                         </div>
 
+                        <!-- Pilih Genre dan Bisa Banyak Genre -->
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="genre-column" class="form-label">Genre</label>                                                                                        
@@ -145,6 +156,7 @@
                             </div>
                         </div>
 
+                        <!-- Upload Cover / Foto Buku -->
                         <div class="col-12">
                             <div class="form-group">
                                 <label class="form-label">Foto Buku</label>
@@ -155,11 +167,14 @@
                             </div>
                         </div>
 
+                        <!-- Menu Button -->
                         <div class="col-12 d-flex flex-wrap justify-content-end gap-2 mt-3">
+                            <!-- Button Kembali ke Manage Buku -->
                             <a href="{{ route('admin.buku.index') }}" class="btn btn-warning text-white px-3 py-2">
                                 Kembali ke List
                             </a>
 
+                            <!-- Button Tambah Buku -->
                             <button type="submit" class="btn btn-primary fw-semibold">
                                 <span id="text-button">Edit Buku</span>
                                 <div id="spinner-loading" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></div>                   
@@ -185,6 +200,7 @@
     <script src="{{ asset('assets/static/js/pages/filepond.js') }}"></script>
     <script src="{{ asset('assets/extensions/choices.js/public/assets/scripts/choices.min.js') }}"></script>
     <script>
+        // Mengubah Select Menu menjadi Choices
         let choicesInput = document.querySelectorAll('.choices');
         let initChoices;
         for (let i = 0; i < choicesInput.length; i++) {
@@ -198,8 +214,8 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const inputElement = document.querySelector('#pond-cover');
+        // Untuk mengambil cover buku dari database dan memasukkan ke filepond agar bisa di hapus atau ditambah cover baru
+        const inputElement = document.querySelector('#pond-cover');
             
             const pond = FilePond.create(inputElement, {
                 credits: false,

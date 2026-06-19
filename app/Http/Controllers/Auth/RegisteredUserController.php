@@ -42,6 +42,7 @@ class RegisteredUserController extends Controller
             "nama.required" => "Nama harus di isi",
             "username.required" => "Username harus di isi",
             "username.unique" => "Username ini sudah digunakan, Gunakan username lain",
+            "email.email" => "Email tidak valid, Contoh: email@example.com",
             "email.required" => "Email harus di isi",
             "email.unique" => "Email ini sudah digunakan, Gunakan email lain",
             "nomorTelp.required" => "Nomor telepon harus di isi",
