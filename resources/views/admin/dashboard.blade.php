@@ -4,7 +4,7 @@
 @section('current-page','Dashboard Perpustakaan')
 
 @section('content')
-    <div class="row g-2">
+    <div class="row g-3">
         <!-- Menampilkan Data Berbentuk Card. di Laptop 1 baris 3 Card, di Tablet 1 baris 2 Card, di hp 1 baris 1 card -->
 
         <!-- Card: Menampilkan Jumlah Review -->
