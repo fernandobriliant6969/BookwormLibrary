@@ -16,87 +16,117 @@ class MemberController extends Controller
      */
     public function dashboard()
     {
+        // Mendapatkan tanggal hari ini
         $now = now()->startOfDay();
 
+        // Deklarasi variabel
         $totalBukuPeminjaman = 0;
         $totalPeminjaman = 0;
 
-        $totalBukuBelumDikembalikan = 0;
+        $totalBukuBelumKembali = 0;
         $totalPeminjamanBelumKembali = 0;
 
         $totalPeminjamanTerlambat = 0;
         $totalBukuTerlambat = 0;
 
-        $isTerlambat = false;
+        // Mendapatkan semua data peminjaman yang milik anggota sedang login
+        $peminjamans = Peminjaman::where('idUser', Auth::id())->with(['details'])->get();
 
-        $peminjamanBelumKembali = Peminjaman::where('idUser', Auth::id())->where('status', '!=', 'Telah Dikembalikan')->with(['details'])->get();
-
-        if($peminjamanBelumKembali->isNotEmpty()) {
-            foreach ($peminjamanBelumKembali as $pinjam) {
-                
-                $tanggalBatas = Carbon::parse($pinjam->tanggalKembali)->startOfDay();
-                
-                if ($tanggalBatas->lessThan($now)) {
-                    $totalPeminjamanTerlambat++;
-                    $isTerlambat = true;
-                } else {
-                    $totalPeminjamanBelumKembali++;
-                    $isTerlambat = false;
-                }
-
+        // Jika data peminjaman ada dan tidak kosong
+        if($peminjamans->isNotEmpty()) {
+            foreach ($peminjamans as $peminjaman) {
+                // Mengakumulasi total peminjaman yang pernah dilakukan oleh anggota
                 $totalPeminjaman++;
 
-                foreach ($pinjam->details as $detail) {
-                    if($detail->status === 'dipinjam') {                        
+                // Deklarasi status isTerlambat ke false
+                $isTerlambat = false;
+
+                // Jika status buku belum dikembalikan
+                if($peminjaman->status !== "Telah Dikembalikan"){
+
+                    // Mengonversi tanggal kembali menggunakan Carbon
+                    $tanggalBatas = Carbon::parse($peminjaman->tanggalKembali)->startOfDay();
+
+                    // Menyimpan status apakah peminjaman terlambat atau tidak
+                    $isTerlambat = $tanggalBatas->lessThan($now);
+
+                    // Jika peminjaman terlambat
+                    if($isTerlambat){
+                        $totalPeminjamanTerlambat++;
+                    } else {
+                    // Jika peminjaman belum terlambat dan belum dikembalikan
+                        $totalPeminjamanBelumKembali++;
+                    }
+                }
+
+                // Looping setiap detail peminjaman dalam 1 peminjaman
+                foreach ($peminjaman->details as $detail) {
+
+                    // Mengakumulasi total buku dari peminjaman
+                    $totalBukuPeminjaman++;
+
+                    // Jika status peminjaman belum dikembalikan dan status buku dipinjam
+                    if($peminjaman->status !== "Telah Dikembalikan" && $detail->status === 'dipinjam') {                    
+                        // Jika status buku dalam peminjaman terlambat dan belum dikembalikan
                         if ($isTerlambat) {
                             $totalBukuTerlambat++;
-                        } 
-                        $totalBukuBelumDikembalikan++;
+                        // Jika status buku dalam peminjaman belum terlambat dan belum dikembalikan
+                        } else { 
+                            $totalBukuBelumKembali++;
+                        }
                     }
                 }
             }
         }
 
-        $peminjaman = Peminjaman::where('idUser', Auth::id())->with(['details'])->get();
-
-        if($peminjaman->isNotEmpty()){
-            foreach($peminjaman as $pinjam){
-                foreach($pinjam->details as $detail){
-                    $totalBukuPeminjaman++;
-                }
-            }
-        }
-
+        // Inisialisasi objek data 
         $peminjamanHarian = collect();
     
+        // Memnetukan tanggal 30 hari yang lalu
+        $startDate = now()->subDays(29)->startOfDay();
+        
+        // Menentukan akhir tanggal hari ini
+        $endDate = now()->endOfDay();
+
+        // Query peminjaman yang peminjaman dilakukan oleh anggota sedang login
+        $dataPeminjaman = Peminjaman::where('idUser', Auth::id())
+            ->whereBetween('tanggalPeminjaman', [$startDate, $endDate]) // Peminjaman yang tanggal peminjaman berada di antara 30 hari yang lalu hingga sekarang
+            ->join('detail_peminjamans', 'peminjamans.idPeminjaman', '=', 'detail_peminjamans.idPeminjaman') // Menghubungkan tabel peminjaman dan detail peminjaman
+            ->selectRaw('DATE(tanggalPeminjaman) as tanggal, COUNT(detail_peminjamans.idDetailPeminjaman) as total') // Menyimpan tanggalPeminjaman sebagai variabel tanggal dan menghitung total buku yang dipinjam per hari
+            ->groupBy('tanggal') // Di group berdasakran Tanggal, Jadi contoh hasil: 2026-06-01, 10
+            ->pluck('total', 'tanggal'); // Menghasilkan array data, Contoh: ['2026-06-01' => 3, '2026-06-02' => 5]
+
+        // For looping untuk memisahkan data per hari
         for($i = 29; $i >= 0; $i--) {
             $date = now()->subDays($i)->format('Y-m-d');
             $labelDate = now()->subDays($i)->format('d M');
 
-            $count = Peminjaman::where('idUser', Auth::id())->whereDate('tanggalPeminjaman', $date)->join('detail_peminjamans', 'peminjamans.idPeminjaman', '=', 'detail_peminjamans.idPeminjaman')->count();
+            // Mendapatkan total buku berdasarkan hari dalam looping
+            $count = $dataPeminjaman->get($date, 0);
 
+            // Push ke objek data yang telah di inisialisasi
             $peminjamanHarian->push([
                 'tanggal' => $labelDate,
                 'total' => $count
             ]);
         }
 
-        $genreData = Peminjaman::where('idUser', Auth::id())->whereHas('details', function($query) {
-            $query->whereHas('buku.genre'); 
-        })->get()->flatMap(function ($pinjam) {
-            return $pinjam->details->flatMap(function ($detail) {
-                return $detail->buku->genre; 
+        // Filter genre berdasarkan peminjaman yang pernah dilakukan oleh anggota
+        $genreData = Genre::whereHas('buku.detailPeminjaman.peminjaman', function ($query) {
+            $query->where('idUser', Auth::id());
+        // Menghitung total buku per genre
+        })->withCount(['bukus as total' => function ($query) {
+            // Filter buku yang hanya pernah dipinjam oleh anggota
+            $query->whereHas('detailPeminjaman.peminjamans', function ($subQuery) {
+                $subQuery->where('idUser', Auth::id());
             });
-        })->groupBy('idGenre')->map(function ($group) {
-            return [
-                'nama' => $group->first()->nama,
-                'total' => $group->count()
-            ];
-        });
+        }])->get();
 
+        // Memasukkan data hasil filter genre ke array satuan untuk digunakan oleh ChartJS
         $donutLabels = $genreData->pluck('nama')->toArray();
         $donutValues = $genreData->pluck('total')->toArray();
 
+        // Memasukkan data hasil filter peminjaman harian ke array satuan untuk digunakan oleh ChartJS
         $chartLabels = $peminjamanHarian->pluck('tanggal')->toArray();
         $chartData = $peminjamanHarian->pluck('total')->toArray();
 
@@ -109,6 +139,7 @@ class MemberController extends Controller
 
     public function listbuku(Request $request)
     {
+        // Mendapatkan data buku beserta genre dan review
         $query = Buku::with([
             'genre', 
             'review' => function($query) {

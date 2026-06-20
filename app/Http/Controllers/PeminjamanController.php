@@ -24,7 +24,7 @@ class PeminjamanController extends Controller
 
             $q->where(function ($sub) use ($search) {
                 $sub->whereHas('user', function ($userQuery) use ($search) {
-                    $userQuery->where('nama', 'like', '%' . $search . '%'); // Sesuaikan nama kolom di tabel user lu
+                    $userQuery->where('nama', 'like', '%' . $search . '%');
                 })->orWhereHas('details.buku', function ($bukuQuery) use ($search) {
                     $bukuQuery->where('judul', 'like', '%' . $search . '%');
                 });

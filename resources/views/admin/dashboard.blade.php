@@ -235,7 +235,6 @@
         });
 
         // Menngonversi tipe data dari PHP menjadi JSON untuk dibaca Javascript
-        // Fungsi {{ }} agar isi data nya tidak berubah 
         // Fungsi json_encode untuk mengonversi tipe data menjadi JSON agar dapat dibaca oleh Javascript
         const labelTanggal = {!! json_encode($chartLabelTotalPeminjaman) !!};
         const dataTotal = {!! json_encode($chartDataTotalPeminjaman) !!};
