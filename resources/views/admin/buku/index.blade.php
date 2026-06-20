@@ -124,7 +124,7 @@
                                         </td>
 
                                         <!-- Judul Buku -->
-                                        <td class="text-bold-200 text-white">{{ $buku->judul }}</td>
+                                        <td class="text-bold-200">{{ $buku->judul }}</td>
 
                                         <!-- Pengarang Buku -->
                                         <td class="text-bold-200">{{ $buku->pengarang }}</td>
