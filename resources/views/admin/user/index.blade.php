@@ -196,7 +196,7 @@
                                                                 <i class="bi bi-trash"></i>
                                                             </button>
                                                         </form>
-
+                                                
                                                     <!-- Jika data anggota yang ditampilkan, rolenya adalah Member -->
                                                     @elseif($user->role == 'member')
                                                         <!-- Button untuk menaikkan Role Member menjadi Admin -->
@@ -228,7 +228,7 @@
                                                 <!-- Jika anggota yang sedang login, rolenya adalah Admin -->
                                                 @elseif(auth()->user()->role == 'admin')
                                                     <!-- Jika data anggota, rolenya adalah bukan superadmin maupun admin -->
-                                                    @if($user->role !== 'superadmin' || $user->role != 'admin')
+                                                    @if($user->role != 'superadmin' || $user->role != 'admin')
                                                         <!-- Button untuk Edit Anggota -->
                                                         <a href="{{ route('admin.user.edit', $user->idUser) }}" class="text-info p-0 line-height-1" data-bs-toggle="tooltip" title="Edit User">
                                                             <img src="{{ asset('assets/icons/edit.png') }}" alt="Edit Icon" style="width: 25px; height: 25px; object-fit: contain;">
