@@ -25,7 +25,7 @@
 
                         <!-- Input Cari Buku Menggunakan Judul / Nama Pengarang -->
                         <div class="col-md-5 col-12">
-                            <label class="form-label text-white fw-bold small mb-1">Cari Buku menggunakan Judul/Author</label>
+                            <label class="form-label fw-bold small mb-1">Cari Buku menggunakan Judul/Author</label>
 
                             <div class="input-group">
                                 <span class="input-group-text border-secondary text-muted search-addon d-flex align-items-center justify-content-center">
@@ -38,7 +38,7 @@
 
                         <!-- Filter Buku menggunakan Genre dan Bisa banyak genre -->
                         <div class="col-md-4 col-12">
-                            <label class="form-label text-white fw-bold small mb-1">Tampil buku berdasarkan kategori</label>
+                            <label class="form-label fw-bold small mb-1">Tampil buku berdasarkan kategori</label>
 
                             <select class="choices form-select" name="idGenre[]" id="filter-genre" multiple="multiple">
                                 @foreach($genres as $g)

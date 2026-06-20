@@ -164,7 +164,7 @@
                                                 
                                                 <!-- Menampilkan Cover Buku, Jika ada cover yang digunakan. Gunakan cover nya, Jika tidak ada cover yang ditambahkan, Gunakan template cover -->
                                                 <div class="col-12 col-lg-4 text-center">
-                                                    <div class="mx-auto rounded shadow-sm overflow-hidden bg-light" style="width: 100%; max-width: 280px; aspect-ratio: 2/3;">
+                                                    <div class="mx-auto rounded shadow-sm overflow-hidden border border-primary bg-light" style="width: 100%; max-width: 280px; aspect-ratio: 2/3;">
                                                         <img src="{{ $buku->photoUrl ?? "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=200&auto=format&fit=crop&q=60" }}" class="w-100 h-100" style="object-fit: fill;" alt="{{ $buku->judul }}">
                                                     </div>
                                                 </div>
@@ -279,7 +279,7 @@
                                                     <!-- Jika ada review pada buku -->
                                                     @forelse($buku->review as $review)
                                                         <div class="col-12 col-lg-6">
-                                                            <div class="p-3 h-100 rounded-3" style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);">
+                                                            <div class="p-3 h-100 rounded-3 border border-primary" style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); background-color: rgba(108, 117, 125, 0.1) !important;">
                                                                 
                                                                 <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
                                                                     
@@ -308,7 +308,7 @@
 
                                                                     <!-- Menampilkan rata-rata rating -->
                                                                     <div class="text-warning-custom style-bintang-kecil text-nowrap" style="font-size: 0.8rem; padding-top: 2px;">
-                                                                        ⭐<span class="text-white fw-bold">{{ $review->pivot->rating }}</span>
+                                                                        ⭐<span class="fw-bold">{{ $review->pivot->rating }}</span>
                                                                     </div>
                                                                 </div>
 

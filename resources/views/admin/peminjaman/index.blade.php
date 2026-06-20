@@ -17,14 +17,14 @@
                     <div class="row g-3 align-items-end">
                         <!-- Input Cari Peminjaman menggunakan Nama Anggota / Judul Buku -->
                         <div class="col-md-5 col-12">
-                            <label class="form-label text-white fw-bold small mb-1">Cari Peminjaman menggunakan Nama Anggota / Judul Buku</label>
+                            <label class="form-label fw-bold small mb-1">Cari Peminjaman menggunakan Nama Anggota / Judul Buku</label>
 
                             <input type="text" class="form-control border-secondary text-white custom-search-input" id="search-peminjaman" name="search" value="{{ request('search') }}" placeholder="Ketik nama member atau judul buku...">
                         </div>
 
                         <!-- Select Status Peminjaman -->
                         <div class="col-md-4 col-12">
-                            <label class="form-label text-white fw-bold small mb-1">Tampil Peminjaman berdasarkan Status Peminjaman</label>
+                            <label class="form-label fw-bold small mb-1">Tampil Peminjaman berdasarkan Status Peminjaman</label>
 
                             <select class="form-select p-2" name="status" id="filter-status">
                                 <option value="">Semua Status</option>

@@ -278,8 +278,8 @@
                                                 <!-- Jika ada review pada buku -->
                                                 <div class="row g-3"> 
                                                     @forelse($buku->review as $review)
-                                                        <div class="col-12 col-lg-6 col-xl-4">
-                                                            <div class="p-3 h-100 rounded-3" style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05);">
+                                                        <div class="col-12 col-lg-6">
+                                                            <div class="p-3 h-100 border border-primary rounded-3" style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); background-color: rgba(108, 117, 125, 0.1) !important;">
 
                                                                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
 
