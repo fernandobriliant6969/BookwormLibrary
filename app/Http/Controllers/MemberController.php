@@ -112,7 +112,7 @@ class MemberController extends Controller
         }
 
         // Filter genre berdasarkan peminjaman yang pernah dilakukan oleh anggota
-        $genreData = Genre::whereHas('buku.detailPeminjaman.peminjaman', function ($query) {
+        $genreData = Genre::whereHas('buku.detailPeminjamans.peminjaman', function ($query) {
             $query->where('idUser', Auth::id());
         // Menghitung total buku per genre
         })->withCount(['bukus as total' => function ($query) {
