@@ -117,7 +117,7 @@ class MemberController extends Controller
         // Menghitung total buku per genre
         })->withCount(['buku as total' => function ($query) {
             // Filter buku yang hanya pernah dipinjam oleh anggota
-            $query->whereHas('detailPeminjaman.peminjamans', function ($subQuery) {
+            $query->whereHas('detailPeminjamans.peminjaman', function ($subQuery) {
                 $subQuery->where('idUser', Auth::id());
             });
         }])->get();
