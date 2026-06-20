@@ -208,6 +208,11 @@ class PeminjamanController extends Controller
 
         // Mengembalikan stok buku
         $buku->increment('stok');
+        
+        // Mengupdate status buku jadi Tersedia jika sebelumnya Tidak Tersedia
+        if($buku->status == "tidak tersedia"){
+            $buku->update(['status' => 'tersedia']);
+        }
 
         // Mengembalikan return ke kelola peminjaman dengan pesan bahwa buku berhasil dikembalikan
         return redirect()->route('admin.peminjaman.edit', $idPeminjaman)->with('success','Berhasil mengembalikan buku dengan judul ' . $buku->judul);
