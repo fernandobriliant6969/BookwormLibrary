@@ -23,7 +23,7 @@ class MemberController extends Controller
         $totalBukuPeminjaman = 0;
         $totalPeminjaman = 0;
 
-        $totalBukuBelumKembali = 0;
+        $totalBukuBelumDikembalikan = 0;
         $totalPeminjamanBelumKembali = 0;
 
         $totalPeminjamanTerlambat = 0;
@@ -72,7 +72,7 @@ class MemberController extends Controller
                             $totalBukuTerlambat++;
                         // Jika status buku dalam peminjaman belum terlambat dan belum dikembalikan
                         } else { 
-                            $totalBukuBelumKembali++;
+                            $totalBukuBelumDikembalikan++;
                         }
                     }
                 }
